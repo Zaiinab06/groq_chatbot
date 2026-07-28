@@ -1,13 +1,19 @@
 import 'dart:convert';
+//import 'dart00:00:19.json';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:fpdart/fpdart.dart';
 import '../models/chat_response.dart';
 
-class GroqApiService {
+abstract interface class IChatApiService {
+  Stream<Either<String, String>> streamChat(String message);
+}
+
+class GroqApiService implements IChatApiService {
   final String _apiKey = dotenv.env['GROQ_API_KEY'] ?? '';
   final String _baseUrl = "https://api.groq.com/openai/v1/chat/completions";
 
+  @override
   Stream<Either<String, String>> streamChat(String message) async* {
     final client = http.Client();
 

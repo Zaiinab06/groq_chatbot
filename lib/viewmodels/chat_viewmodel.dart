@@ -1,14 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/groq_api_service.dart';
 import '../models/chat_message.dart';
-
-final groqApiProvider = Provider((ref) => GroqApiService());
-
-final streamingResponseProvider = StateProvider<String>((ref) => "");
-final isStreamingProvider = StateProvider<bool>((ref) => false);
+import '../providers/chat_providers.dart'; // 👈 Imports for Providers
 
 class ChatNotifier extends StateNotifier<List<ChatMessage>> {
-  final GroqApiService _apiService;
+  final IChatApiService _apiService;
   final Ref _ref;
 
   ChatNotifier(this._apiService, this._ref) : super([]);
@@ -55,9 +51,3 @@ class ChatNotifier extends StateNotifier<List<ChatMessage>> {
         );
   }
 }
-
-final chatProvider = StateNotifierProvider<ChatNotifier, List<ChatMessage>>((
-  ref,
-) {
-  return ChatNotifier(ref.watch(groqApiProvider), ref);
-});
